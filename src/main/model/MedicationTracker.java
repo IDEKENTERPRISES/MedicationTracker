@@ -7,6 +7,17 @@ import java.util.ArrayList;
 public class MedicationTracker {
 
     private ArrayList<Drug> medication;
+    private boolean metricSystem = true; // False - Imperial, True - Metric
+
+    public MedicationTracker(boolean system) {
+        medication = new ArrayList<>();
+        metricSystem = system;
+    }
+
+    public boolean toggleSystem() {
+        metricSystem = !metricSystem;
+        return metricSystem;
+    }
 
     // Adds a drug to the tracker, returns true if it contains colliding ingredients with another drug.
     public boolean addDrug(Drug drug) {

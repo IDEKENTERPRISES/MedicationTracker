@@ -9,14 +9,16 @@ public class Drug {
     private ArrayList<String> ingredients;
     private ArrayList<LocalTime> doseTimes;
     private double dosage;
+    private double amountLeft;
 
-    public Drug(String name, String desc, LocalTime timeToDose, double dosage) {
+    public Drug(String name, String desc, LocalTime timeToDose, double dosage, double initialAmount) {
         this.name = name;
         this.desc = desc;
         this.ingredients = new ArrayList<>();
         this.doseTimes = new ArrayList<>();
         this.doseTimes.add(timeToDose);
         this.dosage = dosage;
+        amountLeft = initialAmount;
     }
 
     public void changeName(String newName) {
@@ -27,12 +29,43 @@ public class Drug {
         this.desc = newDesc;
     }
 
-    public void changeDosageFreq(LocalTime newTime) {
-        doseTimes.add(newTime);
+    public void addDosageFreq(LocalTime newTime) {
+        if (!doseTimes.contains(newTime)) {
+            doseTimes.add(newTime);
+        }
     }
 
     public void removeDosageFreq(LocalTime oldTime) {
         doseTimes.remove(oldTime);
+    }
+
+    public void increaseAmountLeft(double amount) {
+        if (amount > 0) {
+            amountLeft += amount;
+        }
+    }
+
+    public boolean decreaseAmountLeft(double amount) {
+        if (amount > 0) {
+            if (amountLeft > amount) {
+                amountLeft -= amount;
+                return false;
+            } else {
+                amountLeft = 0;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean decreaseAmountLeft() {
+        if (amountLeft > dosage) {
+            amountLeft -= dosage;
+            return false;
+        } else {
+            amountLeft = 0;
+            return true;
+        }
     }
 
     public String getName() {
@@ -53,5 +86,9 @@ public class Drug {
 
     public double getDosage() {
         return dosage;
+    }
+
+    public double getAmountLeft() {
+        return amountLeft;
     }
 }
