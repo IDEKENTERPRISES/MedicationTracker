@@ -29,6 +29,18 @@ public class Drug {
         this.desc = newDesc;
     }
 
+    public void addIngredient(String ingr) {
+        ingredients.add(ingr);
+    }
+
+    public boolean changeDosage(double newDosage) {
+        if (newDosage > 0) {
+            dosage = newDosage;
+            return true;
+        }
+        return false;
+    }
+
     public void addDosageFreq(LocalTime newTime) {
         if (!doseTimes.contains(newTime)) {
             doseTimes.add(newTime);
