@@ -14,6 +14,5 @@ For the past week I have been ill with a cold. I found it tricky to remember whe
 - As a user, I want to be able to be reminded of when to take my medication.
 - As a user, I want to be able to be warned when two drugs contain the same ingredients.
 - As a user, I want to be able to be reminded of when to go to the pharmacy to top up my medication.
-- As a user, I want to be able to be told how much of the medication to take in different measurements (imperial/metric).
 - As a user, I want to be able to add a description for my each of my medications.
 - As a user, I want to be able to see the full medication list.

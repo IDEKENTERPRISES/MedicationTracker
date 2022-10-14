@@ -14,7 +14,7 @@ class MedicationTrackerTest {
 
     @BeforeEach
     public void init(){
-        initTracker = new MedicationTracker(true);
+        initTracker = new MedicationTracker();
 
         exampleDrug1 = new Drug("Frank's cough syrup",
                 "Cough syrup devised to ...",
@@ -36,13 +36,6 @@ class MedicationTrackerTest {
     public void drugsAddedTest() {
         assertEquals(exampleDrug1, initTracker.getMedicationList().get(0));
         assertEquals(exampleDrug2, initTracker.getMedicationList().get(1));
-    }
-
-    @Test
-    public void systemChangeTest() {
-        assertTrue(initTracker.getSystem());
-        assertFalse(initTracker.toggleSystem());
-        assertFalse(initTracker.getSystem());
     }
 
     @Test
