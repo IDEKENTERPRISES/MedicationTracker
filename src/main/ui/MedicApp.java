@@ -3,7 +3,6 @@ package ui;
 import model.Drug;
 import model.MedicationTracker;
 
-import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,8 +72,13 @@ public class MedicApp {
     private void mainMenu() {
         printBanner();
         printStringArray(mainOptions);
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            choice = -1;
+        }
+
         if (!mainSwitches(choice)) {
             mainMenu();
         }
@@ -132,29 +136,47 @@ public class MedicApp {
     }
 
     private void addMedication() {
-        Drug newDrug;
         System.out.print("Name of drug: ");
         String drugName = scanner.nextLine();
         System.out.print("Description of drug: ");
         String drugDesc = scanner.nextLine();
         System.out.print("Dose time of drug (HH:mm): ");
-        String drugTime = scanner.nextLine();
-        System.out.print("Dosage of drug (ml): ");
-        double drugDose = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.print("Current quantity of drug (ml): ");
-        double drugQuan = scanner.nextDouble();
-        scanner.nextLine();
-        newDrug = new Drug(drugName, drugDesc, LocalTime.parse(drugTime), drugDose, drugQuan);
-        tracker.addDrug(newDrug);
+        LocalTime drugTime;
+        try {
+            drugTime = LocalTime.parse(scanner.nextLine());
+        } catch (Exception e) {
+            drugTime = LocalTime.now();
+            System.out.println("Incorrect time format, set dosage time to now.");
+        }
 
+        System.out.print("Dosage of drug (ml): ");
+        double drugDose = doubleCheckLiquids(0);
+        System.out.print("Current quantity of drug (ml): ");
+        double drugQuan = doubleCheckLiquids(0);
+        Drug newDrug = new Drug(drugName, drugDesc, drugTime, drugDose, drugQuan);
+        tracker.addDrug(newDrug);
         drugMenu(newDrug);
+    }
+
+    private double doubleCheckLiquids(double defaultNum) {
+        double returnResponse;
+        try {
+            returnResponse = Double.parseDouble(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.print("Amount set to " + defaultNum + "ml.");
+            returnResponse = defaultNum;
+        }
+        return returnResponse;
     }
 
     private void removeMedication() {
         System.out.print("Index of drug to inspect: ");
-        int drugInd = scanner.nextInt();
-        scanner.nextLine();
+        int drugInd;
+        try {
+            drugInd = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            drugInd = -1;
+        }
 
         if (drugInd > 0 && drugInd <= tracker.getMedicationList().size()) {
             tracker.removeDrug(drugInd - 1);
@@ -170,8 +192,12 @@ public class MedicApp {
 
     private void viewMedication() {
         System.out.print("Index of drug to inspect: ");
-        int drugInd = scanner.nextInt();
-        scanner.nextLine();
+        int drugInd;
+        try {
+            drugInd = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            drugInd = -1;
+        }
 
         if (drugInd > 0 && drugInd <= tracker.getMedicationList().size()) {
             drugMenu(tracker.getMedicationList().get(drugInd - 1));
@@ -185,8 +211,12 @@ public class MedicApp {
         printDrug(drug);
         printStringArray(drugOptions);
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            choice = -1;
+        }
 
         if (!drugSwitches(choice, drug)) {
             drugMenu(drug);
@@ -259,24 +289,34 @@ public class MedicApp {
 
     private void changeAmount(Drug drug) {
         printStringArray(amountOptions);
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            choice = -1;
+        }
         if (choice != 3) {
             System.out.println("How much would you like to change the amount by? (Currently "
                     + drug.getAmountLeft() + "ml): ");
-            double amount = scanner.nextDouble();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1:
-                    drug.increaseAmountLeft(amount);
-                    break;
-                case 2:
-                    drug.decreaseAmountLeft(amount);
-                    break;
+            double amount;
+            try {
+                amount = Double.parseDouble(scanner.nextLine());
+            } catch (Exception e) {
+                amount = -1;
             }
+            amountSwitches(choice, drug, amount);
             changeAmount(drug);
+        }
+    }
+
+    private void amountSwitches(int choice, Drug drug, double amount) {
+        switch (choice) {
+            case 1:
+                drug.increaseAmountLeft(amount);
+                break;
+            case 2:
+                drug.decreaseAmountLeft(amount);
+                break;
         }
     }
 
@@ -286,7 +326,14 @@ public class MedicApp {
         System.out.print("Description of drug: ");
         drug.changeDesc(scanner.nextLine());
         System.out.print("Dosage of drug (ml): ");
-        drug.changeDosage(scanner.nextDouble());
+        int dosage;
+        try {
+            dosage = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            dosage = 0;
+            System.out.print("Amount set to 0ml.");
+        }
+        drug.changeDosage(dosage);
         scanner.nextLine();
     }
 
