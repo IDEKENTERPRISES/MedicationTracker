@@ -3,6 +3,7 @@ package ui;
 import model.Drug;
 import model.MedicationTracker;
 
+import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -228,18 +229,18 @@ public class MedicApp {
             if (drug.getIngredients().contains(ingredient)) {
                 drug.removeIngredient(ingredient);
             } else {
-                drug.addIngredient(ingredient);
-                if (checkCollisions(ingredient).size() > 0) {
-                    System.out.print("Other drugs have the same ingredient. Here is said list of drugs:");
+                ArrayList<Drug> collisions = checkCollisions(ingredient);
+                if (collisions.size() > 0) {
+                    System.out.print("Other drugs have the same ingredient. Here is said list of drugs: ");
                     int counter = 1;
-                    for (Drug collidingDrug: checkCollisions(ingredient)) {
-                        String suffix = counter != checkCollisions(ingredient).size() ? ", " : ".";
+                    for (Drug collidingDrug: collisions) {
+                        String suffix = counter != collisions.size() ? ", " : ".\n";
                         System.out.print(collidingDrug.getName() + suffix);
                         counter++;
                     }
                 }
+                drug.addIngredient(ingredient);
             }
-
         }
     }
 
