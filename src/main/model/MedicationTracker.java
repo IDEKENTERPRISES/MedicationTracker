@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class MedicationTracker {
 
-    private ArrayList<Drug> medicationList;
+    private final ArrayList<Drug> medicationList;
 
     public MedicationTracker() {
         medicationList = new ArrayList<>();
@@ -42,7 +42,7 @@ public class MedicationTracker {
         for (Drug drug: medicationList) {
             for (LocalTime doseTime: drug.getDoseTimes()) {
                 long drugTimeDiff = ChronoUnit.MINUTES.between(currentTime, doseTime);
-                if (drugTimeDiff > 0 && (nextDrugTime > drugTimeDiff || nextDrugTime == -1)) {
+                if (drugTimeDiff >= 0 && (nextDrugTime > drugTimeDiff || nextDrugTime == -1)) {
                     nextDrugTime = drugTimeDiff;
                     nextDrug = drug;
                 }

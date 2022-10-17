@@ -11,6 +11,8 @@ class MedicationTrackerTest {
     private MedicationTracker initTracker;
     private Drug exampleDrug1;
     private Drug exampleDrug2;
+    private Drug soonDrug;
+    private Drug pastDrug;
 
     @BeforeEach
     public void init(){
@@ -30,6 +32,16 @@ class MedicationTrackerTest {
         exampleDrug2.addIngredient("Ibuprofen");
         initTracker.addDrug(exampleDrug1);
         initTracker.addDrug(exampleDrug2);
+
+        soonDrug = new Drug("Next",
+                "test",
+                LocalTime.now().plusMinutes(1),
+                10, 100);
+
+        pastDrug = new Drug("Past",
+                "test",
+                LocalTime.now().minusMinutes(1),
+                10, 100);
     }
 
     @Test
@@ -79,21 +91,18 @@ class MedicationTrackerTest {
     public void nextScheduledDrugTest() {
         assertEquals(exampleDrug2, initTracker.getNextDrug());
 
-        Drug newDrugRandom = new Drug("test",
-                "test",
-                LocalTime.now().plusMinutes(1),
-                10, 100);
+        initTracker.addDrug(soonDrug);
+        assertEquals(soonDrug, initTracker.getNextDrug());
 
-        initTracker.addDrug(newDrugRandom);
+        initTracker.addDrug(pastDrug);
+        assertEquals(soonDrug, initTracker.getNextDrug());
 
-        assertEquals(newDrugRandom, initTracker.getNextDrug());
+        initTracker.removeDrug(exampleDrug1);
+        initTracker.removeDrug(exampleDrug2);
+        initTracker.removeDrug(soonDrug);
 
-        Drug newDrugRandom2 = new Drug("test2",
-                "test",
-                LocalTime.now().minusMinutes(1),
-                10, 100);
-        initTracker.addDrug(newDrugRandom2);
-        assertEquals(newDrugRandom, initTracker.getNextDrug());
+        initTracker.getNextDrug();
+        assertNull(initTracker.getNextDrug());
     }
 
 
