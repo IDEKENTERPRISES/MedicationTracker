@@ -15,16 +15,33 @@ public class MedicApp {
     private MedicationTracker tracker;
 
     private ArrayList<String> mainOptions = new ArrayList<String>(
-            Arrays.asList("1 - List medication list",
-                    "2 - Next drug reminder",
-                    "3 - Add drug",
-                    "4 - Remove drug",
-                    "5 - View specific drug",
+            Arrays.asList("1 - List Medication List",
+                    "2 - Next Drug reminder",
+                    "3 - Add Drug",
+                    "4 - Remove Drug",
+                    "5 - View Specific Drug",
                     "6 - Quit")
+    );
+
+    private ArrayList<String> drugOptions = new ArrayList<String>(
+            Arrays.asList("1 - List Ingredients",
+                    "2 - Change Drug",
+                    "3 - Remove Drug",
+                    "4 - Add Dosage Time",
+                    "5 - Increase/Decrease Amount",
+                    "6 - Add/Remove Ingredient",
+                    "7 - Back")
+    );
+
+    private ArrayList<String> amountOptions = new ArrayList<String>(
+            Arrays.asList("1 - Increase Amount",
+                    "2 - Decrease Amount",
+                    "3 - Cancel")
     );
 
     public MedicApp() {
         scanner = new Scanner(System.in);
+        tracker = new MedicationTracker();
         bannerSet();
         mainMenu();
     }
@@ -45,12 +62,22 @@ public class MedicApp {
         System.out.println("Welcome to the Medication Tracker!");
     }
 
+    private void printStringArray(ArrayList<String> options) {
+        for (String option: options) {
+            System.out.println(option);
+        }
+    }
+
+    private void printTimeArray(ArrayList<LocalTime> times) {
+        for (LocalTime time: times) {
+            System.out.println(time);
+        }
+    }
+
     private void mainMenu() {
 
         printBanner();
-        for (String option: mainOptions) {
-            System.out.println(option);
-        }
+        printStringArray(mainOptions);
         int choice = scanner.nextInt();
         scanner.nextLine();
         switch (choice) {
@@ -138,6 +165,10 @@ public class MedicApp {
         }
     }
 
+    private void removeMedication(Drug drug) {
+        tracker.removeDrug(drug);
+    }
+
     private void viewMedication() {
         System.out.print("Index of drug to inspect: ");
         int drugInd = scanner.nextInt();
@@ -152,6 +183,117 @@ public class MedicApp {
     }
 
     private void drugMenu(Drug drug) {
+        printDrug(drug);
+        printStringArray(drugOptions);
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        boolean quitMenu = false;
+        switch (choice) {
+            case 1:
+                listIngredients(drug);
+                break;
+            case 2:
+                setDrugFields(drug);
+                break;
+            case 3:
+                removeMedication(drug);
+                quitMenu = true;
+                break;
+            case 4:
+                dosageToggles(drug);
+                break;
+            case 5:
+                changeAmount(drug);
+                break;
+            case 6:
+                toggleIngredients(drug);
+                break;
+            case 7:
+                quitMenu = true;
+        }
+        if (!quitMenu) {
+            drugMenu(drug);
+        }
+    }
+
+    private void toggleIngredients(Drug drug) {
+        while (true) {
+            printStringArray(drug.getIngredients());
+            System.out.print("Insert ingredient to change [LEAVE EMPTY TO GO BACK]:");
+            String drugTime = scanner.nextLine();
+            if (drugTime.isEmpty()) {
+                break;
+            }
+            if (drug.getIngredients().contains(drugTime)) {
+                drug.removeIngredient(drugTime);
+            } else {
+                drug.addIngredient(drugTime);
+            }
+
+        }
+    }
+
+    private void changeAmount(Drug drug) {
+        printStringArray(amountOptions);
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        if (choice != 3) {
+            System.out.println("How much would you like to change the amount by? (Currently "
+                    + drug.getAmountLeft() + "ml): ");
+            double amount = scanner.nextDouble();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    drug.increaseAmountLeft(amount);
+                    break;
+                case 2:
+                    drug.decreaseAmountLeft(amount);
+                    break;
+            }
+            changeAmount(drug);
+        }
+    }
+
+    private void setDrugFields(Drug drug) {
+        System.out.print("Name of drug: ");
+        drug.changeName(scanner.nextLine());
+        System.out.print("Description of drug: ");
+        drug.changeDesc(scanner.nextLine());
+        System.out.print("Dosage of drug (ml): ");
+        drug.changeDosage(scanner.nextDouble());
+        scanner.nextLine();
+    }
+
+
+    private void dosageToggles(Drug drug) {
+        while (true) {
+            try {
+                printTimeArray(drug.getDoseTimes());
+                System.out.print("Insert time to toggle (HH:mm) [LEAVE EMPTY TO GO BACK]:");
+                String drugTime = scanner.nextLine();
+                if (drug.getDoseTimes().contains(LocalTime.parse(drugTime))) {
+                    drug.getDoseTimes().remove(LocalTime.parse(drugTime));
+                } else {
+                    drug.addDosageFreq(LocalTime.parse(drugTime));
+                }
+            } catch (Exception e) {
+                break;
+            }
+        }
+
+    }
+
+    private void listIngredients(Drug drug) {
+        System.out.print(drug.getName() + " contains:");
+        for (String ingredient: drug.getIngredients()) {
+            System.out.print(ingredient + ", ");
+        }
+    }
+
+    private void printDrug(Drug drug) {
         System.out.println("Name of drug: " + drug.getName());
         System.out.println("Description of drug: " + drug.getDesc());
         System.out.println("Dose times of drug (HH:mm): " + drug.getDoseTimes());

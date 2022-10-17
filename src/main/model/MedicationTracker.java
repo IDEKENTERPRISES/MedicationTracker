@@ -31,6 +31,10 @@ public class MedicationTracker {
         }
     }
 
+    public void removeDrug(Drug drug) {
+        medicationList.remove(drug);
+    }
+
     public Drug getNextDrug() {
         LocalTime currentTime = LocalTime.now();
         long nextDrugTime = -1;

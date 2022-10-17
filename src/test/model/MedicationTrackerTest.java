@@ -70,6 +70,12 @@ class MedicationTrackerTest {
     }
 
     @Test
+    public void drugRemovalTest2() {
+        initTracker.removeDrug(exampleDrug1);
+        assertNotEquals(exampleDrug1, initTracker.getMedicationList().get(0));
+    }
+
+    @Test
     public void nextScheduledDrugTest() {
         assertEquals(exampleDrug2, initTracker.getNextDrug());
 

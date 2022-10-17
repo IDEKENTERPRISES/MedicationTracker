@@ -23,55 +23,57 @@ public class DrugTest {
     @Test
     public void simpleChangesTest() {
         initDrug.changeName("New Name");
-        assertEquals(initDrug.getName(), "New Name");
+        assertEquals("New Name", initDrug.getName());
         initDrug.changeDesc("New Description");
-        assertEquals(initDrug.getDesc(), "New Description");
+        assertEquals("New Description", initDrug.getDesc());
     }
 
     @Test
     public void properFrequencyChangeTest() {
         initDrug.addDosageFreq(LocalTime.of(16,30));
-        assertEquals(initDrug.getDoseTimes().get(1), LocalTime.of(16,30));
+        assertEquals(LocalTime.of(16,30), initDrug.getDoseTimes().get(1));
         initDrug.removeDosageFreq(LocalTime.of(10,30));
-        assertEquals(initDrug.getDoseTimes().size(), 1);
+        assertEquals(1, initDrug.getDoseTimes().size());
     }
 
     @Test
     public void improperFrequencyChangeTest() {
         initDrug.addDosageFreq(LocalTime.of(10,30));
-        assertEquals(initDrug.getDoseTimes().size(), 1);
+        assertEquals(1, initDrug.getDoseTimes().size());
         initDrug.removeDosageFreq(LocalTime.of(5,15));
-        assertEquals(initDrug.getDoseTimes().size(), 1);
+        assertEquals(1, initDrug.getDoseTimes().size());
     }
 
     @Test
     public void amountTest() {
         initDrug.increaseAmountLeft(100);
-        assertEquals(initDrug.getAmountLeft(), 1100);
+        assertEquals(1100, initDrug.getAmountLeft());
         assertFalse(initDrug.decreaseAmountLeft(200));
-        assertEquals(initDrug.getAmountLeft(), 900);
+        assertEquals(900, initDrug.getAmountLeft());
         assertFalse(initDrug.decreaseAmountLeft());
-        assertEquals(initDrug.getAmountLeft(), 800);
+        assertEquals(800, initDrug.getAmountLeft());
         assertFalse(initDrug.decreaseAmountLeft(750));
-        assertEquals(initDrug.getAmountLeft(), 50);
+        assertEquals(50, initDrug.getAmountLeft());
         assertTrue(initDrug.decreaseAmountLeft());
-        assertEquals(initDrug.getAmountLeft(), 0);
+        assertEquals(0, initDrug.getAmountLeft());
         initDrug.increaseAmountLeft(50);
         assertTrue(initDrug.decreaseAmountLeft(60));
-        assertEquals(initDrug.getAmountLeft(), 0);
+        assertEquals(0, initDrug.getAmountLeft());
         assertFalse(initDrug.decreaseAmountLeft(-100));
     }
 
     @Test
     public void dosageTest(){
         assertTrue(initDrug.changeDosage(10));
-        assertEquals(initDrug.getDosage(), 10);
+        assertEquals(10, initDrug.getDosage());
         assertFalse(initDrug.changeDosage(-100));
     }
 
     @Test
     public void ingredientsTest(){
         initDrug.addIngredient("Test Ingredient");
-        assertEquals(initDrug.getIngredients().get(0), "Test Ingredient");
+        assertEquals("Test Ingredient", initDrug.getIngredients().get(0));
+        initDrug.removeIngredient("Test Ingredient");
+        assertEquals(0, initDrug.getIngredients().size());
     }
 }

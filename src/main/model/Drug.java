@@ -33,6 +33,10 @@ public class Drug {
         ingredients.add(ingr);
     }
 
+    public void removeIngredient(String ingr) {
+        ingredients.remove(ingr);
+    }
+
     public boolean changeDosage(double newDosage) {
         if (newDosage > 0) {
             dosage = newDosage;
