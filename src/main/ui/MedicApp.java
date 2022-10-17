@@ -11,11 +11,10 @@ import java.util.Scanner;
 
 public class MedicApp {
 
-    private Scanner scanner;
-    private ArrayList<String> banner = null;
-    private MedicationTracker tracker;
+    private final Scanner scanner;
+    private final MedicationTracker tracker;
 
-    private ArrayList<String> mainOptions = new ArrayList<String>(
+    private final ArrayList<String> mainOptions = new ArrayList<>(
             Arrays.asList("1 - List Medication List",
                     "2 - Next Drug reminder",
                     "3 - Add Drug",
@@ -24,7 +23,7 @@ public class MedicApp {
                     "6 - Quit")
     );
 
-    private ArrayList<String> drugOptions = new ArrayList<String>(
+    private final ArrayList<String> drugOptions = new ArrayList<>(
             Arrays.asList("1 - List Ingredients",
                     "2 - Change Drug",
                     "3 - Remove Drug",
@@ -34,7 +33,7 @@ public class MedicApp {
                     "7 - Back")
     );
 
-    private ArrayList<String> amountOptions = new ArrayList<String>(
+    private final ArrayList<String> amountOptions = new ArrayList<>(
             Arrays.asList("1 - Increase Amount",
                     "2 - Decrease Amount",
                     "3 - Cancel")
@@ -43,20 +42,16 @@ public class MedicApp {
     public MedicApp() {
         scanner = new Scanner(System.in);
         tracker = new MedicationTracker();
-        bannerSet();
         mainMenu();
     }
 
-    private void bannerSet() {
-        banner = new ArrayList<String>();
+    private void printBanner() {
+        ArrayList<String> banner = new ArrayList<>();
         banner.add("                   _  _        _____                     _                ");
         banner.add("  /\\/\\    ___   __| |(_)  ___ /__   \\ _ __   __ _   ___ | | __  ___  _ __ ");
         banner.add(" /    \\  / _ \\ / _` || | / __|  / /\\/| '__| / _` | / __|| |/ / / _ \\| '__|");
         banner.add("/ /\\/\\ \\|  __/| (_| || || (__  / /   | |   | (_| || (__ |   < |  __/| |   ");
         banner.add("\\/    \\/ \\___| \\__,_||_| \\___| \\/    |_|    \\__,_| \\___||_|\\_\\ \\___||_|   ");
-    }
-
-    private void printBanner() {
         for (String row: banner) {
             System.out.println(row);
         }
@@ -76,11 +71,16 @@ public class MedicApp {
     }
 
     private void mainMenu() {
-
         printBanner();
         printStringArray(mainOptions);
         int choice = scanner.nextInt();
         scanner.nextLine();
+        if (!mainSwitches(choice)) {
+            mainMenu();
+        }
+    }
+
+    private boolean mainSwitches(int choice) {
         switch (choice) {
             case 1:
                 listMedication();
@@ -98,13 +98,11 @@ public class MedicApp {
                 viewMedication();
                 break;
             case 6:
-                System.exit(6);
+                return true;
             default:
                 System.out.println("Invalid option chosen!");
         }
-
-        mainMenu();
-
+        return false;
     }
 
     private void listMedication() {
@@ -189,7 +187,13 @@ public class MedicApp {
 
         int choice = scanner.nextInt();
         scanner.nextLine();
-        boolean quitMenu = false;
+
+        if (!drugSwitches(choice, drug)) {
+            drugMenu(drug);
+        }
+    }
+
+    private boolean drugSwitches(int choice, Drug drug) {
         switch (choice) {
             case 1:
                 listIngredients(drug);
@@ -199,8 +203,7 @@ public class MedicApp {
                 break;
             case 3:
                 removeMedication(drug);
-                quitMenu = true;
-                break;
+                return true;
             case 4:
                 dosageToggles(drug);
                 break;
@@ -211,11 +214,9 @@ public class MedicApp {
                 toggleIngredients(drug);
                 break;
             case 7:
-                quitMenu = true;
+                return true;
         }
-        if (!quitMenu) {
-            drugMenu(drug);
-        }
+        return false;
     }
 
     private void toggleIngredients(Drug drug) {
