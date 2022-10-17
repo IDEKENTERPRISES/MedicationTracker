@@ -221,17 +221,38 @@ public class MedicApp {
         while (true) {
             printStringArray(drug.getIngredients());
             System.out.print("Insert ingredient to change [LEAVE EMPTY TO GO BACK]:");
-            String drugTime = scanner.nextLine();
-            if (drugTime.isEmpty()) {
+            String ingredient = scanner.nextLine();
+            if (ingredient.isEmpty()) {
                 break;
             }
-            if (drug.getIngredients().contains(drugTime)) {
-                drug.removeIngredient(drugTime);
+            if (drug.getIngredients().contains(ingredient)) {
+                drug.removeIngredient(ingredient);
             } else {
-                drug.addIngredient(drugTime);
+                drug.addIngredient(ingredient);
+                if (checkCollisions(ingredient).size() > 0) {
+                    System.out.print("Other drugs have the same ingredient. Here is said list of drugs:");
+                    int counter = 1;
+                    for (Drug collidingDrug: checkCollisions(ingredient)) {
+                        String suffix = counter != checkCollisions(ingredient).size() ? ", " : ".";
+                        System.out.print(collidingDrug.getName() + suffix);
+                        counter++;
+                    }
+                }
             }
 
         }
+    }
+
+    private ArrayList<Drug> checkCollisions(String ingredient) {
+
+        ArrayList<Drug> conflictingDrugs = new ArrayList<>();
+
+        for (Drug drug: tracker.getMedicationList()) {
+            if (drug.getIngredients().contains(ingredient)) {
+                conflictingDrugs.add(drug);
+            }
+        }
+        return conflictingDrugs;
     }
 
     private void changeAmount(Drug drug) {
