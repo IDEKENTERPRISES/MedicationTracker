@@ -60,6 +60,7 @@ public class DrugTest {
         assertTrue(initDrug.decreaseAmountLeft(60));
         assertEquals(0, initDrug.getAmountLeft());
         assertFalse(initDrug.decreaseAmountLeft(-100));
+        assertFalse(initDrug.increaseAmountLeft(0));
     }
 
     @Test

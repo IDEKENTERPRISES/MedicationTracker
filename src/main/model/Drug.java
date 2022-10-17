@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class Drug {
     private String name;
     private String desc;
-    private ArrayList<String> ingredients;
-    private ArrayList<LocalTime> doseTimes;
+    private final ArrayList<String> ingredients;
+    private final ArrayList<LocalTime> doseTimes;
     private double dosage;
     private double amountLeft;
 
@@ -55,10 +55,16 @@ public class Drug {
         doseTimes.remove(oldTime);
     }
 
-    public void increaseAmountLeft(double amount) {
+    public boolean increaseAmountLeft(double amount) {
         if (amount > 0) {
-            amountLeft += amount;
+            if (amountLeft > amount) {
+                amountLeft += amount;
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
     }
 
     public boolean decreaseAmountLeft(double amount) {

@@ -87,7 +87,16 @@ class MedicationTrackerTest {
         initTracker.addDrug(newDrugRandom);
 
         assertEquals(newDrugRandom, initTracker.getNextDrug());
+
+        Drug newDrugRandom2 = new Drug("test2",
+                "test",
+                LocalTime.now().minusMinutes(1),
+                10, 100);
+        initTracker.addDrug(newDrugRandom2);
+        assertEquals(newDrugRandom, initTracker.getNextDrug());
     }
+
+
 
 
 }
