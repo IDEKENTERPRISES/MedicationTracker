@@ -17,3 +17,5 @@ For the past week I have been ill with a cold. I found it tricky to remember whe
 - As a user, I want to be able to be told how much of the medication to take.
 - As a user, I want to be able to add a description for my each of my medications.
 - As a user, I want to be able to see the full medication list.
+- As a user, I want to be able to save what medications are already in my tracker.
+- As a user, I want to be able to load medications from a file.
