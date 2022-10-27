@@ -2,16 +2,23 @@ package ui;
 
 import model.Drug;
 import model.MedicationTracker;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static java.lang.Double.parseDouble;
+
 public class MedicApp {
 
     private final Scanner scanner;
-    private final MedicationTracker tracker;
+    private MedicationTracker tracker;
+    private JsonWriter jsonWriter;
 
     private final ArrayList<String> mainOptions = new ArrayList<>(
             Arrays.asList("1 - List Medication List",
@@ -40,8 +47,49 @@ public class MedicApp {
 
     public MedicApp() {
         scanner = new Scanner(System.in);
-        tracker = new MedicationTracker();
+
+        trackingChoice();
+        jsonWriter = new JsonWriter("./data/test.json");
         mainMenu();
+    }
+
+    private void trackingChoice() {
+        System.out.print("Would you like to load from a save? (Y/N): ");
+        switch (scanner.nextLine().toLowerCase()) {
+            case "y":
+                loadJsonData();
+                break;
+            case "n":
+                tracker = new MedicationTracker();
+                break;
+            default:
+                trackingChoice();
+        }
+    }
+
+    private void saveJsonData() {
+        System.out.print("Name of save: ");
+        try {
+            String saveName = scanner.nextLine();
+            jsonWriter = new JsonWriter(saveName);
+            jsonWriter.open();
+            jsonWriter.write(tracker);
+            jsonWriter.close();
+        } catch (Exception e) {
+            System.out.println("An IO error occurred, exiting.");
+        }
+    }
+
+    private void loadJsonData() {
+        System.out.print("Name of save: ");
+        try {
+            String saveName = scanner.nextLine();
+            JsonReader jsonReader = new JsonReader(saveName);
+            tracker = jsonReader.read();
+        } catch (IOException e) {
+            System.out.println("An IO error occurred, starting new save.");
+            tracker = new MedicationTracker();
+        }
     }
 
     private void printBanner() {
@@ -81,6 +129,20 @@ public class MedicApp {
 
         if (!mainSwitches(choice)) {
             mainMenu();
+        }
+        quitting();
+    }
+
+    private void quitting() {
+        System.out.print("Save before quitting? (Y/N): ");
+        switch (scanner.nextLine().toLowerCase()) {
+            case "y":
+                saveJsonData();
+                break;
+            case "n":
+                break;
+            default:
+                quitting();
         }
     }
 
@@ -125,6 +187,13 @@ public class MedicApp {
 
     private void nextMedication() {
         Drug nextDrug = tracker.getNextDrug();
+        try {
+            jsonWriter.open();
+            jsonWriter.write(tracker);
+            jsonWriter.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Oopsy");
+        }
 
         if (nextDrug != null) {
             drugMenu(nextDrug);
@@ -150,27 +219,27 @@ public class MedicApp {
         }
 
         System.out.print("Dosage of drug (ml): ");
-        double drugDose = doubleCheckLiquids(0);
+        double drugDose = doubleCheckLiquids();
         System.out.print("Current quantity of drug (ml): ");
-        double drugQuan = doubleCheckLiquids(0);
+        double drugQuan = doubleCheckLiquids();
         Drug newDrug = new Drug(drugName, drugDesc, drugTime, drugDose, drugQuan);
         tracker.addDrug(newDrug);
         drugMenu(newDrug);
     }
 
-    private double doubleCheckLiquids(double defaultNum) {
+    private double doubleCheckLiquids() {
         double returnResponse;
         try {
-            returnResponse = Double.parseDouble(scanner.nextLine());
+            returnResponse = parseDouble(scanner.nextLine());
         } catch (Exception e) {
-            System.out.print("Amount set to " + defaultNum + "ml.");
-            returnResponse = defaultNum;
+            System.out.print("Amount set to 0ml.");
+            returnResponse = 0;
         }
         return returnResponse;
     }
 
     private void removeMedication() {
-        System.out.print("Index of drug to inspect: ");
+        System.out.print("Index of drug to delete: ");
         int drugInd;
         try {
             drugInd = Integer.parseInt(scanner.nextLine());
@@ -300,7 +369,7 @@ public class MedicApp {
                     + drug.getAmountLeft() + "ml): ");
             double amount;
             try {
-                amount = Double.parseDouble(scanner.nextLine());
+                amount = parseDouble(scanner.nextLine());
             } catch (Exception e) {
                 amount = -1;
             }
@@ -347,7 +416,7 @@ public class MedicApp {
                 if (drug.getDoseTimes().contains(LocalTime.parse(drugTime))) {
                     drug.getDoseTimes().remove(LocalTime.parse(drugTime));
                 } else {
-                    drug.addDosageFreq(LocalTime.parse(drugTime));
+                    drug.addDoseTime(LocalTime.parse(drugTime));
                 }
             } catch (Exception e) {
                 break;

@@ -1,0 +1,36 @@
+{"drugs": [
+    {
+        "dosage": 20,
+        "amountLeft": 250,
+        "name": "Jamie's cough medicine",
+        "ingredients": [
+            "Paracetamol",
+            "Ibuprofen",
+            "Aqua"
+        ],
+        "doseTimes": [
+            "10:30",
+            "20:15"
+        ],
+        "desc": "Relieves cold symptoms (Test purpose: Multiple dose times)"
+    },
+    {
+        "dosage": 100,
+        "amountLeft": 20000,
+        "name": "Generic Drug Name",
+        "ingredients": [
+            "Generic Substance",
+            "Non-Generic Substance"
+        ],
+        "doseTimes": ["12:00"],
+        "desc": "Generic Drug Description (Test purpose: Simple Example)"
+    },
+    {
+        "dosage": 1,
+        "amountLeft": 50,
+        "name": "Ingredientless Drug",
+        "ingredients": [],
+        "doseTimes": ["01:36"],
+        "desc": "Hello there (Test purpose: No ingredients)"
+    }
+]}

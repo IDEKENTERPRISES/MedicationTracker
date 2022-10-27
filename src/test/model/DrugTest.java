@@ -30,7 +30,7 @@ public class DrugTest {
 
     @Test
     public void properFrequencyChangeTest() {
-        initDrug.addDosageFreq(LocalTime.of(16,30));
+        initDrug.addDoseTime(LocalTime.of(16,30));
         assertEquals(LocalTime.of(16,30), initDrug.getDoseTimes().get(1));
         initDrug.removeDosageFreq(LocalTime.of(10,30));
         assertEquals(1, initDrug.getDoseTimes().size());
@@ -38,7 +38,7 @@ public class DrugTest {
 
     @Test
     public void improperFrequencyChangeTest() {
-        initDrug.addDosageFreq(LocalTime.of(10,30));
+        initDrug.addDoseTime(LocalTime.of(10,30));
         assertEquals(1, initDrug.getDoseTimes().size());
         initDrug.removeDosageFreq(LocalTime.of(5,15));
         assertEquals(1, initDrug.getDoseTimes().size());

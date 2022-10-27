@@ -1,15 +1,36 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writeable;
+
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class MedicationTracker {
+public class MedicationTracker implements Writeable {
 
     private final ArrayList<Drug> medicationList;
 
     public MedicationTracker() {
         medicationList = new ArrayList<>();
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("drugs", drugsToJson());
+        return json;
+    }
+
+    private JSONArray drugsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Drug drug : medicationList) {
+            jsonArray.put(drug.toJson());
+        }
+
+        return jsonArray;
     }
 
     // Adds a drug to the tracker, returns true if it contains colliding ingredients with another drug.

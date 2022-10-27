@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -11,12 +13,22 @@ public class Drug {
     private double dosage;
     private double amountLeft;
 
+    public Drug(String name, String desc, ArrayList<LocalTime> timeToDose, double dosage, double initialAmount) {
+        this.name = name;
+        this.desc = desc;
+        this.ingredients = new ArrayList<>();
+        this.doseTimes = new ArrayList<>();
+        this.doseTimes.addAll(timeToDose);
+        this.dosage = dosage;
+        amountLeft = initialAmount;
+    }
+
     public Drug(String name, String desc, LocalTime timeToDose, double dosage, double initialAmount) {
         this.name = name;
         this.desc = desc;
         this.ingredients = new ArrayList<>();
         this.doseTimes = new ArrayList<>();
-        this.doseTimes.add(timeToDose);
+        this.addDoseTime(timeToDose);
         this.dosage = dosage;
         amountLeft = initialAmount;
     }
@@ -45,7 +57,7 @@ public class Drug {
         return false;
     }
 
-    public void addDosageFreq(LocalTime newTime) {
+    public void addDoseTime(LocalTime newTime) {
         if (!doseTimes.contains(newTime)) {
             doseTimes.add(newTime);
         }
@@ -112,5 +124,17 @@ public class Drug {
 
     public double getAmountLeft() {
         return amountLeft;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("desc", desc);
+        json.put("ingredients", ingredients);
+        json.put("doseTimes", doseTimes);
+        json.put("dosage", dosage);
+        json.put("amountLeft", amountLeft);
+
+        return json;
     }
 }
