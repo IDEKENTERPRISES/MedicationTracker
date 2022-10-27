@@ -53,6 +53,8 @@ public class MedicApp {
         mainMenu();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Asks the user if they would like to load from a save. Else, a new tracker is made.
     private void trackingChoice() {
         System.out.print("Would you like to load from a save? (Y/N): ");
         switch (scanner.nextLine().toLowerCase()) {
@@ -67,6 +69,7 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Saves the current tracker to a JSON file. If an exception occurs it is caught.
     private void saveJsonData() {
         System.out.print("Name of save: ");
         try {
@@ -76,10 +79,12 @@ public class MedicApp {
             jsonWriter.write(tracker);
             jsonWriter.close();
         } catch (Exception e) {
-            System.out.println("An IO error occurred, exiting.");
+            System.out.println("An error occurred, exiting.");
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Loads a tracker from a JSON file. If an IOException occurs, a new tracker is made.
     private void loadJsonData() {
         System.out.print("Name of save: ");
         try {
@@ -92,6 +97,7 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Prints this cool banner haha.
     private void printBanner() {
         ArrayList<String> banner = new ArrayList<>();
         banner.add("                   _  _        _____                     _                ");
@@ -105,18 +111,22 @@ public class MedicApp {
         System.out.println("Welcome to the Medication Tracker!");
     }
 
+    // EFFECTS: Prints out each string in an array.
     private void printStringArray(ArrayList<String> options) {
         for (String option: options) {
             System.out.println(option);
         }
     }
 
+    // EFFECTS: Prints out each LocalTime in an array.
     private void printTimeArray(ArrayList<LocalTime> times) {
         for (LocalTime time: times) {
             System.out.println(time);
         }
     }
 
+    // EFFECTS: Print banner and options. Takes a user's choice of action.
+    //          If mainSwitches returns true, the program will quit the main loop.
     private void mainMenu() {
         printBanner();
         printStringArray(mainOptions);
@@ -133,6 +143,8 @@ public class MedicApp {
         quitting();
     }
 
+    // EFFECTS: Asks the user if they would like to save their tracker using JSON formatting.
+    //          If not, program quits. If input is incorrect, recurse.
     private void quitting() {
         System.out.print("Save before quitting? (Y/N): ");
         switch (scanner.nextLine().toLowerCase()) {
@@ -146,6 +158,8 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Takes the user's choice and executes the action.
+    //          If choice = 6, program will start to quit.
     private boolean mainSwitches(int choice) {
         switch (choice) {
             case 1:
@@ -171,6 +185,8 @@ public class MedicApp {
         return false;
     }
 
+    // EFFECTS: List all drugs inside the medication list. If no drugs have been added, say so.
+    //          If the drug has less amount that dosage then alert the user.
     private void listMedication() {
         int indexPointer = 1;
         for (Drug drug : tracker.getMedicationList()) {
@@ -185,15 +201,9 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Gets the next Drug schedules for today. If null, none are scheduled.
     private void nextMedication() {
         Drug nextDrug = tracker.getNextDrug();
-        try {
-            jsonWriter.open();
-            jsonWriter.write(tracker);
-            jsonWriter.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Oopsy");
-        }
 
         if (nextDrug != null) {
             drugMenu(nextDrug);
@@ -204,6 +214,9 @@ public class MedicApp {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: Creates a new drug based on the user's input.
+    //          Upon creation, user is taken to the menu for the new drug.
     private void addMedication() {
         System.out.print("Name of drug: ");
         String drugName = scanner.nextLine();
@@ -227,6 +240,7 @@ public class MedicApp {
         drugMenu(newDrug);
     }
 
+    // EFFECTS: Checks to see if the input is a valid double, if not then return 0.
     private double doubleCheckLiquids() {
         double returnResponse;
         try {
@@ -238,6 +252,8 @@ public class MedicApp {
         return returnResponse;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Remove a drug based on a given index.
     private void removeMedication() {
         System.out.print("Index of drug to delete: ");
         int drugInd;
@@ -247,18 +263,22 @@ public class MedicApp {
             drugInd = -1;
         }
 
-        if (drugInd > 0 && drugInd <= tracker.getMedicationList().size()) {
-            tracker.removeDrug(drugInd - 1);
+        if (tracker.removeDrug(drugInd - 1)) {
             System.out.print("Drug successfully removed.");
         } else {
             System.out.print("Incorrect index provided.");
         }
+
     }
 
+    // MODIFIES: this
+    // EFFECTS: Removed a given drug.
     private void removeMedication(Drug drug) {
         tracker.removeDrug(drug);
     }
 
+    // REQUIRES: drugInd > 0 && drugInd <= tracker.getMedicationList().size()
+    // EFFECTS: Asks the user which drug they would like to inspect.
     private void viewMedication() {
         System.out.print("Index of drug to inspect: ");
         int drugInd;
@@ -276,6 +296,7 @@ public class MedicApp {
 
     }
 
+    // EFFECTS: Opens the menu for the given drug.
     private void drugMenu(Drug drug) {
         printDrug(drug);
         printStringArray(drugOptions);
@@ -292,6 +313,8 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Takes the user's choice and executes the action.
+    //          If choice = 7, program will go back to the main menu.
     private boolean drugSwitches(int choice, Drug drug) {
         switch (choice) {
             case 1:
@@ -318,6 +341,10 @@ public class MedicApp {
         return false;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Starts a new menu which allows the user to input an ingredient name and
+    //          toggle whether that ingredient is in the drug or not.
+    //          If another drug contains the same ingredient then a warning is displayed. Loops.
     private void toggleIngredients(Drug drug) {
         while (true) {
             printStringArray(drug.getIngredients());
@@ -344,6 +371,8 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Goes through each drug and each of their ingredients.
+    //          If the given string matches then return each drug that contains it.
     private ArrayList<Drug> checkCollisions(String ingredient) {
 
         ArrayList<Drug> conflictingDrugs = new ArrayList<>();
@@ -356,6 +385,9 @@ public class MedicApp {
         return conflictingDrugs;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Opens a new menu which allows the user to decide if they want to
+    //          decrease or increase a given drug's amount and by how much. Loops.
     private void changeAmount(Drug drug) {
         printStringArray(amountOptions);
         int choice;
@@ -378,6 +410,7 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Increases or decreases the amount of a drug based on the choice.
     private void amountSwitches(int choice, Drug drug, double amount) {
         switch (choice) {
             case 1:
@@ -389,6 +422,8 @@ public class MedicApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Resets a given drug's values based on new inputted ones.
     private void setDrugFields(Drug drug) {
         System.out.print("Name of drug: ");
         drug.changeName(scanner.nextLine());
@@ -407,6 +442,9 @@ public class MedicApp {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: Starts a new menu which allows the user to input a time and
+    //          toggle whether that time is a time to take a dose. Loops.
     private void dosageToggles(Drug drug) {
         while (true) {
             try {
@@ -425,6 +463,7 @@ public class MedicApp {
 
     }
 
+    // EFFECTS: List all the ingredients of a given drug.
     private void listIngredients(Drug drug) {
         System.out.print(drug.getName() + " contains:");
         for (String ingredient: drug.getIngredients()) {
@@ -432,6 +471,7 @@ public class MedicApp {
         }
     }
 
+    // EFFECTS: Prints all of a drug's information.
     private void printDrug(Drug drug) {
         System.out.println("Name of drug: " + drug.getName());
         System.out.println("Description of drug: " + drug.getDesc());

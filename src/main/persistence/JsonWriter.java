@@ -1,4 +1,5 @@
 package persistence;
+// Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
 import model.MedicationTracker;
 import org.json.JSONObject;
@@ -6,10 +7,13 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+// Class which writes the JSON equivalent of a MedicationTracker to a file given by the user.
 public class JsonWriter {
+
     private final String savePath;
     private PrintWriter printWriter;
 
+    // EFFECTS: Creates a new JsonWriter object and sets the save path.
     public JsonWriter(String savePath) {
         this.savePath = "./data/" + savePath + ".json";
     }
@@ -22,7 +26,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of a MedicationTracker to file
     public void write(MedicationTracker tracker) {
         JSONObject json = tracker.toJson();
         printWriter.print(json.toString(4));

@@ -1,14 +1,13 @@
 package persistence;
+// Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
 import model.Drug;
 import model.MedicationTracker;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

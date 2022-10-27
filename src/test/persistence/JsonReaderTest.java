@@ -1,4 +1,5 @@
 package persistence;
+// Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
 import model.MedicationTracker;
 import org.junit.jupiter.api.Test;

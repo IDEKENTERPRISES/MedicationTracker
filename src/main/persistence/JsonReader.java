@@ -1,4 +1,5 @@
 package persistence;
+// Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
 import model.Drug;
 import model.MedicationTracker;
@@ -13,17 +14,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+// Class which reads the JSON equivalent of a MedicationTracker from a file given by the user.
 public class JsonReader {
 
     private final String source;
 
-    // EFFECTS: constructs reader to read from source file
+    // EFFECTS: constructs reader to read from source file and sets source file path.
     public JsonReader(String source) {
         this.source = "./data/" + source + ".json";
     }
 
-    // EFFECTS: reads workroom from file and returns it;
-    // throws IOException if an error occurs reading data from file
+    // EFFECTS: reads MedicationTracker from file and returns it;
+    // if an error occurs, IOException is thrown.
     public MedicationTracker read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
@@ -41,7 +43,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
+    // EFFECTS: parses MedicationTracker from JSON object and returns it
     private MedicationTracker parseTracker(JSONObject jsonObject) {
         MedicationTracker tracker = new MedicationTracker();
         addDrugs(tracker, jsonObject);
@@ -49,7 +51,8 @@ public class JsonReader {
     }
 
     // MODIFIES: tracker
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // EFFECTS: loops through drugs in the tracker's medication list;
+    // each drug is then constructed.
     private void addDrugs(MedicationTracker tracker, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("drugs");
         for (Object json : jsonArray) {
@@ -59,7 +62,8 @@ public class JsonReader {
     }
 
     // MODIFIES: tracker
-    // EFFECTS: parses thingy from JSON object and adds it to workroom
+    // EFFECTS: gets all values from the JSON Object and adds it to a new Drug Object.
+    // doseTimes and ingredients must be looped through as they are arraylists.
     private void drugConstruction(MedicationTracker tracker, JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         String desc = jsonObject.getString("desc");
