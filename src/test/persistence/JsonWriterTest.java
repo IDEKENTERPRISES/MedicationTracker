@@ -24,7 +24,7 @@ public class JsonWriterTest {
                 LocalTime.of(10,30),
                 100,
                 1000);
-
+        exampleDrug.addIngredient("Test Ingredient");
         tracker.addDrug(exampleDrug);
     }
 

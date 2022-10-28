@@ -15,7 +15,7 @@ class MedicationTrackerTest {
     private Drug pastDrug;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         initTracker = new MedicationTracker();
 
         exampleDrug1 = new Drug("Frank's cough syrup",
@@ -78,6 +78,7 @@ class MedicationTrackerTest {
 
         initTracker.removeDrug(1);
         assertEquals(exampleDrug1, initTracker.getMedicationList().get(0));
+        //noinspection ResultOfMethodCallIgnored
         assertThrows(IndexOutOfBoundsException.class, () -> initTracker.getMedicationList().get(1));
     }
 
