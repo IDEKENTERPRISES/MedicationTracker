@@ -70,14 +70,16 @@ public class MedicationTracker implements Writeable {
     //          Returns null if no drugs are upcoming TODAY.
     public Drug getNextDrug() {
         LocalTime currentTime = LocalTime.now();
-        long nextDrugTime = -1;
+        long nextDrugTime = 9999999;
         Drug nextDrug = null;
         for (Drug drug: medicationList) {
             for (LocalTime doseTime: drug.getDoseTimes()) {
                 long drugTimeDiff = ChronoUnit.MINUTES.between(currentTime, doseTime);
-                if (drugTimeDiff >= 0 && (nextDrugTime > drugTimeDiff || nextDrugTime == -1)) {
-                    nextDrugTime = drugTimeDiff;
-                    nextDrug = drug;
+                if (drugTimeDiff >= 0) {
+                    if (nextDrugTime > drugTimeDiff) {
+                        nextDrugTime = drugTimeDiff;
+                        nextDrug = drug;
+                    }
                 }
             }
         }
