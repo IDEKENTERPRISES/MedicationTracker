@@ -36,10 +36,6 @@ public class Drug {
         amountLeft = initialAmount;
     }
 
-    private void test() {
-
-    }
-
     // EFFECTS: Creates a new Drug object with completely empty fields.
     public Drug() {
         this.name = "";
