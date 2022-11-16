@@ -36,6 +36,16 @@ public class Drug {
         amountLeft = initialAmount;
     }
 
+    // EFFECTS: Creates a new Drug object with completely empty fields.
+    public Drug() {
+        this.name = "";
+        this.desc = "";
+        this.ingredients = new ArrayList<>();
+        this.doseTimes = new ArrayList<>();
+        this.dosage = 0;
+        amountLeft = 0;
+    }
+
     // MODIFIES: this
     // EFFECTS: Changes the name of the drug.
     public void changeName(String newName) {

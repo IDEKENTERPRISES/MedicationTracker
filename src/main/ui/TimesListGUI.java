@@ -7,13 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
+import java.time.LocalTime;
 
 public class TimesListGUI extends JFrame implements ActionListener {
 
-    private MedicationTracker tracker;
-    private Drug drug;
-    private JTextField ingField;
+    private final MedicationTracker tracker;
+    private final Drug drug;
+    private JTextField timeField;
 
     public TimesListGUI(MedicationTracker tracker, Drug drug) {
         super("Medication Tracker");
@@ -32,42 +32,41 @@ public class TimesListGUI extends JFrame implements ActionListener {
 
     private void setUpUI() {
         JPanel panel = new JPanel(new GridLayout(0,1));
-        int ind = 1;
-        for (String ing: drug.getIngredients()) {
-            JLabel newLab = new JLabel(ing);
+        for (LocalTime time: drug.getDoseTimes()) {
+            JLabel newLab = new JLabel(time.toString());
             panel.add(newLab);
-            ind++;
         }
         JScrollPane scrollPane = new JScrollPane(panel);
-        ingField = new JTextField();
+        timeField = new JTextField();
 
         JPanel togglePanel = new JPanel(new GridLayout(1,2));
         JButton toggleIngButt = new JButton("Add/Remove");
-        toggleIngButt.setActionCommand("toggleIng");
+        toggleIngButt.setActionCommand("toggleTime");
         toggleIngButt.addActionListener(this);
         togglePanel.add(toggleIngButt);
         add(scrollPane);
-        add(ingField);
+        add(timeField);
         add(togglePanel);
     }
 
     //This is the method that is called when the JButton btn is clicked
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("toggleIng")) {
-            String ingredient = ingField.getText();
-            if (!Objects.equals(ingredient, "")) {
-                if (drug.getIngredients().contains(ingredient)) {
-                    drug.removeIngredient(ingredient);
+        if (e.getActionCommand().equals("toggleTime")) {
+            String drugTime = timeField.getText();
+            try {
+                if (drug.getDoseTimes().contains(LocalTime.parse(drugTime))) {
+                    drug.getDoseTimes().remove(LocalTime.parse(drugTime));
                 } else {
-                    drug.addIngredient(ingredient);
+                    drug.addDoseTime(LocalTime.parse(drugTime));
                 }
+                reopenTimes();
+            } catch (Exception ex) {
+                System.out.println("Error occurred, improper time format given.");
             }
         }
-        reopenIngredients();
-
     }
 
-    private void reopenIngredients() {
+    private void reopenTimes() {
         new TimesListGUI(tracker, drug);
         this.dispose();
     }

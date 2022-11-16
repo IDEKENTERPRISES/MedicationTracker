@@ -4,6 +4,7 @@ package persistence;
 import model.MedicationTracker;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
@@ -16,6 +17,11 @@ public class JsonWriter {
     // EFFECTS: Creates a new JsonWriter object and sets the save path.
     public JsonWriter(String savePath) {
         this.savePath = "./data/" + savePath + ".json";
+    }
+
+    // EFFECTS: Creates a new JsonWriter object and sets the save path from the file given.
+    public JsonWriter(File saveFile) {
+        this.savePath = saveFile.getAbsolutePath() + ".json";
     }
 
     // MODIFIES: this

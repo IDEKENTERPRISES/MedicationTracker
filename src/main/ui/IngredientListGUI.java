@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class IngredientListGUI extends JFrame implements ActionListener {
 
-    private MedicationTracker tracker;
-    private Drug drug;
+    private final MedicationTracker tracker;
+    private final Drug drug;
     private JTextField ingField;
 
     public IngredientListGUI(MedicationTracker tracker, Drug drug) {
@@ -32,11 +32,9 @@ public class IngredientListGUI extends JFrame implements ActionListener {
 
     private void setUpUI() {
         JPanel panel = new JPanel(new GridLayout(0,1));
-        int ind = 1;
         for (String ing: drug.getIngredients()) {
             JLabel newLab = new JLabel(ing);
             panel.add(newLab);
-            ind++;
         }
         JScrollPane scrollPane = new JScrollPane(panel);
         ingField = new JTextField();

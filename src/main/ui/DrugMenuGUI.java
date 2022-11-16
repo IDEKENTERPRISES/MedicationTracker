@@ -11,8 +11,8 @@ import java.util.Objects;
 
 public class DrugMenuGUI extends JFrame implements ActionListener {
 
-    private MedicationTracker tracker;
-    private Drug drug;
+    private final MedicationTracker tracker;
+    private final Drug drug;
     private JTextField nameField;
     private JTextField descField;
     private JTextField amountField;
@@ -27,6 +27,23 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         setLayout(new GridLayout(0,1));
         setUpFieldsUI();
         populateFields();
+        setUpButtonsUI();
+        pack();
+
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
+    }
+
+    public DrugMenuGUI(MedicationTracker tracker) {
+        super("New Drug Menu");
+        this.tracker = tracker;
+        this.drug = new Drug();
+        tracker.addDrug(this.drug);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setPreferredSize(new Dimension(500, 350));
+        setLayout(new GridLayout(0,1));
+        setUpFieldsUI();
         setUpButtonsUI();
         pack();
 
@@ -94,10 +111,12 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
             new IngredientListGUI(tracker, drug);
         }
         if (e.getActionCommand().equals("timesMenu")) {
-            // stub
+            new TimesListGUI(tracker, drug);
         }
         if (e.getActionCommand().equals("saveDrug")) {
             saveDrug();
+            new MainGUI(tracker);
+            this.dispose();
         }
     }
 
