@@ -14,8 +14,9 @@ import java.io.IOException;
 public class JsonChooserGUI extends JFrame implements ActionListener {
 
     private MedicationTracker tracker;
-    private JFileChooser fileChooser;
 
+    // EFFECTS: Creates a new frame that gives the user the option to load a file or start from scratch.
+    //          If the user chooses to import a file then a file dialog will show up.
     public JsonChooserGUI() {
         super("Medication Tracker");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -36,10 +37,11 @@ public class JsonChooserGUI extends JFrame implements ActionListener {
         setResizable(false);
     }
 
-    //This is the method that is called when the JButton btn is clicked
+    // EFFECTS: Clicking the load button will open a file dialog and the user can select their previous save.
+    //          Clicking the new button will create a new tracker and use it.
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("loadButton")) {
-            this.fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
             int result = fileChooser.showOpenDialog(this);
             if (result == JFileChooser.APPROVE_OPTION) {

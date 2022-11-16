@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
 
+// Create a new Frame to hold the menu for a drug
 public class DrugMenuGUI extends JFrame implements ActionListener {
 
     private final MedicationTracker tracker;
@@ -18,6 +19,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
     private JTextField amountField;
     private JTextField dosageField;
 
+    // EFFECTS: Open add all items to the frame and set up the buttons with listeners.
+    //          It populates fields with the given drug
     public DrugMenuGUI(MedicationTracker tracker, Drug drug) {
         super(drug.getName() + " Menu");
         this.tracker = tracker;
@@ -35,6 +38,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         setResizable(false);
     }
 
+    // EFFECTS: Open add all items to the frame and set up the buttons with listeners.
+    //          No population takes place.
     public DrugMenuGUI(MedicationTracker tracker) {
         super("New Drug Menu");
         this.tracker = tracker;
@@ -52,6 +57,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         setResizable(false);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Populates the fields with their assigned values.
     private void populateFields() {
         nameField.setText(drug.getName());
         descField.setText(drug.getDesc());
@@ -59,6 +66,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         dosageField.setText(String.valueOf(drug.getDosage()));
     }
 
+    // MODIFIES:
+    // EFFECTS: Adds all labels and fields to a new panel.
     private void setUpFieldsUI() {
         JPanel panel = new JPanel(new GridLayout(0,1));
         JLabel nameLabel = new JLabel("Name: ");
@@ -80,6 +89,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         add(panel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Creates and connects new buttons to this class' listener
     private void setUpButtonsUI() {
         JButton ingButt = new JButton("Ingredients Menu");
         JButton timesButt = new JButton("Dosage Times Menu");
@@ -97,6 +108,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         add(panel);
     }
 
+    // MODIFIES: drug, this
+    // EFFECTS: Sets the new values to the drug and closes this Frame.
     private void saveDrug() {
         drug.changeName(nameField.getText());
         drug.changeDesc(descField.getText());
@@ -105,7 +118,8 @@ public class DrugMenuGUI extends JFrame implements ActionListener {
         this.dispose();
     }
 
-    //This is the method that is called when the JButton btn is clicked
+    // MODIFIES: this
+    // EFFECTS: Handles events fired by the buttons. Saving will close the frame.
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("ingMenu")) {
             new IngredientListGUI(tracker, drug);

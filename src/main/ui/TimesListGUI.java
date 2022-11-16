@@ -15,6 +15,9 @@ public class TimesListGUI extends JFrame implements ActionListener {
     private final Drug drug;
     private JTextField timeField;
 
+    // EFFECTS: Creates a new Frame that contains all dosage times
+    //          in a list with a text field and button to add/remove the time
+    //          for a given drug.
     public TimesListGUI(MedicationTracker tracker, Drug drug) {
         super("Medication Tracker");
         this.tracker = tracker;
@@ -30,6 +33,9 @@ public class TimesListGUI extends JFrame implements ActionListener {
         setResizable(false);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Creates a new panel that gets populated by a Scroll Pane
+    // and the dosage times of the drug. This then gets added to the frame.
     private void setUpUI() {
         JPanel panel = new JPanel(new GridLayout(0,1));
         for (LocalTime time: drug.getDoseTimes()) {
@@ -49,7 +55,8 @@ public class TimesListGUI extends JFrame implements ActionListener {
         add(togglePanel);
     }
 
-    //This is the method that is called when the JButton btn is clicked
+    // MODIFIES: drug
+    // EFFECTS: Toggles a given time when the button is clicked.
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("toggleTime")) {
             String drugTime = timeField.getText();
@@ -66,6 +73,8 @@ public class TimesListGUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Opens a new instance of TimesListGUI and closes this instance.
     private void reopenTimes() {
         new TimesListGUI(tracker, drug);
         this.dispose();
