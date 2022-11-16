@@ -103,6 +103,13 @@ public class Drug {
 
     // REQUIRES: amount > 0
     // MODIFIES: this
+    // EFFECTS: Sets the amount left directly.
+    public void setAmount(double amount) {
+        amountLeft = amount;
+    }
+
+    // REQUIRES: amount > 0
+    // MODIFIES: this
     // EFFECTS: Removes a given amount of the current amount of the drug.
     public boolean decreaseAmountLeft(double amount) {
         if (amount > 0) {

@@ -6,6 +6,7 @@ import model.MedicationTracker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,6 +23,11 @@ public class JsonReader {
     // EFFECTS: constructs reader to read from source file and sets source file path.
     public JsonReader(String source) {
         this.source = "./data/" + source + ".json";
+    }
+
+    // EFFECTS: constructs reader to read from source file and sets source file path.
+    public JsonReader(File file) {
+        this.source = file.getAbsolutePath();
     }
 
     // EFFECTS: reads MedicationTracker from file and returns it;
