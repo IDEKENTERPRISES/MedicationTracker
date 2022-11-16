@@ -4,6 +4,7 @@ package persistence;
 import model.MedicationTracker;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +36,23 @@ public class JsonReaderTest {
 
     @Test
     void generalTest() {
+        JsonReader reader = new JsonReader("test");
+        try {
+            MedicationTracker tracker = reader.read();
+            assertEquals(3, tracker.getMedicationList().size());
+            assertEquals("Jamie's cough medicine", tracker.getMedicationList().get(0).getName());
+            assertEquals(0, tracker.getMedicationList().get(2).getIngredients().size());
+            assertEquals(3, tracker.getMedicationList().get(0).getIngredients().size());
+            assertEquals("Paracetamol", tracker.getMedicationList().get(0).getIngredients().get(0));
+
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        }
+    }
+
+    @Test
+    void generalTestFile() {
+        File file = new File("./test");
         JsonReader reader = new JsonReader("test");
         try {
             MedicationTracker tracker = reader.read();

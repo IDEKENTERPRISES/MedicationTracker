@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,6 +27,17 @@ public class DrugTest {
         assertEquals("New Name", initDrug.getName());
         initDrug.changeDesc("New Description");
         assertEquals("New Description", initDrug.getDesc());
+    }
+
+    @Test
+    public void emptyDrugTest() {
+        Drug drug = new Drug();
+        assertTrue(drug.getName().isEmpty());
+        assertTrue(drug.getDesc().isEmpty());
+        assertTrue(drug.getIngredients().isEmpty());
+        assertTrue(drug.getDoseTimes().isEmpty());
+        assertEquals(0, drug.getAmountLeft());
+        assertEquals(0, drug.getDosage());
     }
 
     @Test
@@ -68,6 +80,8 @@ public class DrugTest {
         assertTrue(initDrug.changeDosage(10));
         assertEquals(10, initDrug.getDosage());
         assertFalse(initDrug.changeDosage(-100));
+        initDrug.setAmount(100);
+        assertEquals(100, initDrug.getAmountLeft());
     }
 
     @Test

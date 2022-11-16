@@ -6,6 +6,7 @@ import model.MedicationTracker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
 
@@ -48,6 +49,25 @@ public class JsonWriterTest {
             writer.close();
 
             JsonReader reader = new JsonReader("writing-general-test");
+            tracker = reader.read();
+            assertEquals(exampleDrug.getName(), tracker.getMedicationList().get(0).getName());
+            assertEquals(1, tracker.getMedicationList().size());
+        } catch (IOException e) {
+            fail("Exception should not have been thrown");
+        }
+    }
+
+    @Test
+    void writeGeneralFile() {
+        try {
+            File fileWrite = new File("./writing-general-test");
+            JsonWriter writer = new JsonWriter(fileWrite);
+            writer.open();
+            writer.write(tracker);
+            writer.close();
+
+            File fileRead = new File("./writing-general-test.json");
+            JsonReader reader = new JsonReader(fileRead);
             tracker = reader.read();
             assertEquals(exampleDrug.getName(), tracker.getMedicationList().get(0).getName());
             assertEquals(1, tracker.getMedicationList().size());
