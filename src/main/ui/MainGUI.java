@@ -1,17 +1,28 @@
 package ui;
 
+import com.google.zxing.WriterException;
 import model.Drug;
 import model.MedicationTracker;
 import persistence.JsonWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.time.LocalTime;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import static ui.GenerateQR.createQRImage;
 
 public class MainGUI extends JFrame implements ActionListener {
 
@@ -85,8 +96,50 @@ public class MainGUI extends JFrame implements ActionListener {
         }
     }
 
+    // MODIFIES: this, newFrame
+    // EFFECTS: Creates a new frame containing the QR equivalent of the tracker in JSON.
+    // Clicking the QR will go back to the main screen.
+    private void qrPage(BufferedImage code) {
+        JFrame newFrame = new JFrame();
+        newFrame.setVisible(true);
+        newFrame.setSize(new Dimension(400,400));
+        newFrame.setResizable(false);
+        newFrame.setLocationRelativeTo(null);
+        JLabel picLabel = new JLabel(new ImageIcon(
+                code.getScaledInstance(200, 200, Image.SCALE_FAST)));
+
+        newFrame.add(picLabel);
+        newFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        picLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                newFrame.dispose();
+                setVisible(true);
+            }
+        });
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Generates a QR of the JSON of the tracker and prints it to screen and to the save location.
+    private void generateTheCode(File chooser) {
+        try {
+            createQRImage(new File(chooser.getAbsolutePath() + ".png"),
+                    tracker.toJson().toString(4), 4, "png");
+
+            BufferedImage code = ImageIO.read(new File(chooser.getAbsolutePath() + ".png"));
+            qrPage(code);
+            this.setVisible(false);
+        } catch (IOException e) {
+            System.out.println("Error when generating the file.");
+        } catch (WriterException e) {
+            System.out.println("Error when writing file.");
+        }
+
+    }
+
     // EFFECTS: Save the tracker in JSON with the extension .json using the path the user chooses from the file dialog.
     private void saveTracker() {
+
         try {
             JFileChooser chooser = new JFileChooser();
             int userSelection = chooser.showSaveDialog(this);
@@ -97,6 +150,8 @@ public class MainGUI extends JFrame implements ActionListener {
                 jsonWriter.open();
                 jsonWriter.write(tracker);
                 jsonWriter.close();
+
+                generateTheCode(fileToSave);
             }
         } catch (Exception e) {
             System.out.println("An error occurred, exiting. Error: " + e.getMessage());
