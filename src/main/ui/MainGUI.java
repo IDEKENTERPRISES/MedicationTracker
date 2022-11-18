@@ -1,14 +1,14 @@
 package ui;
 
 import com.google.zxing.WriterException;
+
 import model.Drug;
 import model.MedicationTracker;
+
 import persistence.JsonWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,14 +16,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.time.LocalTime;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 import static ui.GenerateQR.createQRImage;
 
+// The main GUI for the program. Shows a list of drugs and allows the selection of a drug to access its menu.
 public class MainGUI extends JFrame implements ActionListener {
 
     private final MedicationTracker tracker;
