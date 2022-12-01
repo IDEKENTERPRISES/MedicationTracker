@@ -78,3 +78,11 @@ and IngredientListGUI. This would make it easier to manage and modify the behavi
 and reduce the amount of code repetition. Furthermore, I could have implemented an interface to better implement the 
 existing GUIs, incorporating a button generation method, a UI parameter setter, and an event listener. Additionally, 
 I could have implemented an observer pattern.
+
+
+### UML Diagram
+<object data="UML_Design_Diagram.pdf" type="application/pdf" width="700px" height="700px">
+    <embed src="UML_Design_Diagram.pdf">
+        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="UML_Design_Diagram.pdf">Download PDF</a>.</p>
+    </embed>
+</object>
