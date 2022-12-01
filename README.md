@@ -21,6 +21,10 @@ For the past week I have been ill with a cold. I found it tricky to remember whe
 - As a user, I want to be able to load medications from a file.
 
 ## Phase 4: Task 2
+
+<details>
+  <summary>View Sample Log</summary>
+
 ```
 Wed Nov 30 23:57:56 PST 2022
 Started new tracker.
@@ -65,3 +69,12 @@ Drug Ingredientless Drug amount set to 50.000000ml.
 Wed Nov 30 23:58:18 PST 2022
 Medication list requested.
 ```
+</details>
+
+## Phase 4: Task 3
+
+If I had more time for this project, I would create an abstract class to unify the functionalities of the TimesListGUI 
+and IngredientListGUI. This would make it easier to manage and modify the behavior of both panels simultaneously, 
+and reduce the amount of code repetition. Furthermore, I could have implemented an interface to better implement the 
+existing GUIs, incorporating a button generation method, a UI parameter setter, and an event listener. Additionally, 
+I could have implemented an observer pattern.
