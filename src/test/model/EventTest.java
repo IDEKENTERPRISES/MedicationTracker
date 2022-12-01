@@ -29,8 +29,8 @@ public class EventTest {
     public void testEquals() {
         Event newEvent = new Event("Event was added 2.");
         assertNotEquals(newEvent.hashCode(), testEvent.hashCode());
-        assertNotEquals(null, testEvent);
-        assertNotEquals("Event was added.", testEvent);
+        assertFalse(testEvent.equals(null));
+        assertFalse(testEvent.equals("Event was added."));
         assertNotEquals(testEvent, newEvent);
         assertEquals(testEvent, testEvent);
     }
