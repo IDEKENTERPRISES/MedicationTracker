@@ -88,7 +88,7 @@ public class JsonWriterTest {
             JsonReader reader = new JsonReader("writing-empty-test");
             tempTracker = reader.read();
             assertEquals(0, tempTracker.getMedicationList().size());
-            assertNull(tracker.getNextDrug());
+            assertNull(tempTracker.getNextDrug());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
