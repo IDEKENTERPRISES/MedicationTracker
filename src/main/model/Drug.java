@@ -23,6 +23,7 @@ public class Drug {
         this.doseTimes.addAll(timeToDose);
         this.dosage = dosage;
         amountLeft = initialAmount;
+        EventLog.getInstance().logEvent(new Event(String.format("Reloaded drug: %s.", this.name)));
     }
 
     // EFFECTS: Creates a new Drug object with the given parameters. timeToDose is a single LocalTime object.
@@ -34,6 +35,7 @@ public class Drug {
         this.addDoseTime(timeToDose);
         this.dosage = dosage;
         amountLeft = initialAmount;
+        EventLog.getInstance().logEvent(new Event("Reloaded drug: " + this.name + "."));
     }
 
     // EFFECTS: Creates a new Drug object with completely empty fields.
@@ -44,17 +46,20 @@ public class Drug {
         this.doseTimes = new ArrayList<>();
         this.dosage = 0;
         amountLeft = 0;
+        EventLog.getInstance().logEvent(new Event("Created new empty drug."));
     }
 
     // MODIFIES: this
     // EFFECTS: Changes the name of the drug.
     public void changeName(String newName) {
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s changed name to %s", this.name, newName)));
         this.name = newName;
     }
 
     // MODIFIES: this
     // EFFECTS: Changes the description of the drug.
     public void changeDesc(String newDesc) {
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s changed description.", this.name)));
         this.desc = newDesc;
     }
 
@@ -62,12 +67,14 @@ public class Drug {
     // EFFECTS: Adds an ingredient to the drug.
     public void addIngredient(String ingr) {
         ingredients.add(ingr);
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s added ingredient %s.", this.name, ingr)));
     }
 
     // MODIFIES: this
     // EFFECTS: Removes an ingredient from the drug.
     public void removeIngredient(String ingr) {
         ingredients.remove(ingr);
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s removed ingredient %s.", this.name, ingr)));
     }
 
     // REQUIRES: newDosage > 0
@@ -76,6 +83,9 @@ public class Drug {
     public boolean changeDosage(double newDosage) {
         if (newDosage > 0) {
             dosage = newDosage;
+            EventLog.getInstance().logEvent(
+                    new Event(String.format("Drug %s changed dosage to %fml.", this.name, newDosage))
+            );
             return true;
         }
         return false;
@@ -87,6 +97,9 @@ public class Drug {
     public void addDoseTime(LocalTime newTime) {
         if (!doseTimes.contains(newTime)) {
             doseTimes.add(newTime);
+            EventLog.getInstance().logEvent(
+                    new Event(String.format("Drug %s dose time added. (%s)", this.name, newTime.toString()))
+            );
         }
     }
 
@@ -94,6 +107,9 @@ public class Drug {
     // EFFECTS: Removes a dose time from the drug.
     public void removeDoseTime(LocalTime oldTime) {
         doseTimes.remove(oldTime);
+        EventLog.getInstance().logEvent(
+                new Event(String.format("Drug %s dose time removed. (%s)", this.name, oldTime.toString()))
+        );
     }
 
     // REQUIRES: amount > 0
@@ -103,6 +119,9 @@ public class Drug {
         if (amount > 0) {
             if (amountLeft > amount) {
                 amountLeft += amount;
+                EventLog.getInstance().logEvent(
+                        new Event(String.format("Drug %s amount increased by %fml.", this.name, amount))
+                );
                 return true;
             } else {
                 return false;
@@ -116,6 +135,9 @@ public class Drug {
     // EFFECTS: Sets the amount left directly.
     public void setAmount(double amount) {
         amountLeft = amount;
+        EventLog.getInstance().logEvent(
+                new Event(String.format("Drug %s amount set to %fml.", this.name, amount))
+        );
     }
 
     // REQUIRES: amount > 0
@@ -125,9 +147,13 @@ public class Drug {
         if (amount > 0) {
             if (amountLeft > amount) {
                 amountLeft -= amount;
+                EventLog.getInstance().logEvent(
+                        new Event(String.format("Drug %s amount decreased by %fml.", this.name, amount))
+                );
                 return false;
             } else {
                 amountLeft = 0;
+                EventLog.getInstance().logEvent(new Event(String.format("Drug %s amount set to 0).", this.name)));
                 return true;
             }
         }
@@ -142,6 +168,7 @@ public class Drug {
             return false;
         } else {
             amountLeft = 0;
+            EventLog.getInstance().logEvent(new Event(String.format("Drug %s amount set to 0).", this.name)));
             return true;
         }
     }
@@ -186,6 +213,7 @@ public class Drug {
         json.put("dosage", dosage);
         json.put("amountLeft", amountLeft);
 
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s converted to JSON object.", this.name)));
         return json;
     }
 }

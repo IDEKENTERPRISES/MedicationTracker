@@ -1,6 +1,8 @@
 package persistence;
 // Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
+import model.Event;
+import model.EventLog;
 import model.MedicationTracker;
 import org.json.JSONObject;
 
@@ -43,5 +45,4 @@ public class JsonWriter {
     public void close() {
         printWriter.close();
     }
-
 }

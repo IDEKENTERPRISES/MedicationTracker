@@ -1,10 +1,9 @@
 package ui;
 
 import com.google.zxing.WriterException;
-
 import model.Drug;
+import model.EventLog;
 import model.MedicationTracker;
-
 import persistence.JsonWriter;
 
 import javax.imageio.ImageIO;
@@ -33,7 +32,7 @@ public class MainGUI extends JFrame implements ActionListener {
         this.tracker = tracker;
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(300, 240));
+        setPreferredSize(new Dimension(450, 240));
         setLayout(new GridLayout(0,1));
         setUpUI();
         pack();
@@ -48,6 +47,33 @@ public class MainGUI extends JFrame implements ActionListener {
     //          The panel is then added to the frame.
     private void setUpUI() {
         JPanel panel = new JPanel(new GridLayout(0,1));
+        drugButtons(panel);
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        add(scrollPane);
+
+        JPanel buttonsPanel = new JPanel(new GridLayout(1,3));
+
+        JButton saveButton = new JButton("Save Tracker");
+        JButton newDrugButton = new JButton("Create New Drug");
+        JButton clearLogButton = new JButton("Clear Log");
+
+        saveButton.setActionCommand("save");
+        newDrugButton.setActionCommand("newDrug");
+        clearLogButton.setActionCommand("clearLog");
+
+        saveButton.addActionListener(this);
+        newDrugButton.addActionListener(this);
+        clearLogButton.addActionListener(this);
+
+        buttonsPanel.add(newDrugButton);
+        buttonsPanel.add(saveButton);
+        buttonsPanel.add(clearLogButton);
+
+        add(buttonsPanel);
+    }
+
+    private void drugButtons(JPanel panel) {
         int ind = 0;
         for (Drug drug: tracker.getMedicationList()) {
             JButton newButt = new JButton(drug.getName());
@@ -56,18 +82,6 @@ public class MainGUI extends JFrame implements ActionListener {
             panel.add(newButt);
             ind++;
         }
-        JScrollPane scrollPane = new JScrollPane(panel);
-        add(scrollPane);
-        JPanel buttonsPanel = new JPanel(new GridLayout(1,2));
-        JButton saveButton = new JButton("Save Tracker");
-        JButton newDrugButton = new JButton("Create New Drug");
-        saveButton.setActionCommand("save");
-        newDrugButton.setActionCommand("newDrug");
-        saveButton.addActionListener(this);
-        newDrugButton.addActionListener(this);
-        buttonsPanel.add(newDrugButton);
-        buttonsPanel.add(saveButton);
-        add(buttonsPanel);
     }
 
     // MODIFIES: this
@@ -85,6 +99,10 @@ public class MainGUI extends JFrame implements ActionListener {
 
         if (e.getActionCommand().equals("save")) {
             saveTracker();
+        }
+
+        if (e.getActionCommand().equals("clearLog")) {
+            EventLog.getInstance().clear();
         }
 
         if (e.getActionCommand().equals("newDrug")) {

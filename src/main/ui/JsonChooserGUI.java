@@ -53,7 +53,6 @@ public class JsonChooserGUI extends JFrame implements ActionListener {
         }
         if (e.getActionCommand().equals("skipButton")) {
             this.tracker = new MedicationTracker();
-            System.out.println("New tracker created!");
             new MainGUI(tracker);
             this.dispose();
         }
@@ -65,7 +64,6 @@ public class JsonChooserGUI extends JFrame implements ActionListener {
         try {
             JsonReader jsonReader = new JsonReader(file);
             tracker = jsonReader.read();
-            System.out.println("Loaded previous tracker!");
         } catch (IOException e) {
             System.out.println("An IO error occurred, starting new tracker.");
             tracker = new MedicationTracker();

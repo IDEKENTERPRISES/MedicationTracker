@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Objects;
 
 // Create a new Frame to hold the menu for a drug
 public class DrugMenuGUI extends JFrame implements ActionListener {

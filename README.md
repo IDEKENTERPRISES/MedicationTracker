@@ -19,3 +19,49 @@ For the past week I have been ill with a cold. I found it tricky to remember whe
 - As a user, I want to be able to see the full medication list.
 - As a user, I want to be able to save what medications are already in my tracker.
 - As a user, I want to be able to load medications from a file.
+
+## Phase 4: Task 2
+```
+Wed Nov 30 23:57:56 PST 2022
+Started new tracker.
+Wed Nov 30 23:57:56 PST 2022
+Reloaded drug: Jamie's cough medicine.
+Wed Nov 30 23:57:56 PST 2022
+Drug Jamie's cough medicine added ingredient Paracetamol.
+Wed Nov 30 23:57:56 PST 2022
+Drug Jamie's cough medicine added ingredient Ibuprofen.
+Wed Nov 30 23:57:56 PST 2022
+Drug Jamie's cough medicine added ingredient Aqua.
+Wed Nov 30 23:57:56 PST 2022
+Drug Jamie's cough medicine added to tracker.
+Wed Nov 30 23:57:56 PST 2022
+Reloaded drug: Generic Drug Name.
+Wed Nov 30 23:57:56 PST 2022
+Drug Generic Drug Name added ingredient Generic Substance.
+Wed Nov 30 23:57:56 PST 2022
+Drug Generic Drug Name added ingredient Non-Generic Substance.
+Wed Nov 30 23:57:56 PST 2022
+Drug Generic Drug Name added to tracker.
+Wed Nov 30 23:57:56 PST 2022
+Reloaded drug: Ingredientless Drug.
+Wed Nov 30 23:57:56 PST 2022
+Drug Ingredientless Drug added to tracker.
+Wed Nov 30 23:57:56 PST 2022
+Medication list requested.
+Wed Nov 30 23:58:00 PST 2022
+Medication list requested.
+Wed Nov 30 23:58:08 PST 2022
+Drug Ingredientless Drug added ingredient New Ingredient.
+Wed Nov 30 23:58:13 PST 2022
+Drug Ingredientless Drug dose time added. (12:30)
+Wed Nov 30 23:58:18 PST 2022
+Drug Ingredientless Drug changed name to Ingredientless Drug
+Wed Nov 30 23:58:18 PST 2022
+Drug Ingredientless Drug changed description.
+Wed Nov 30 23:58:18 PST 2022
+Drug Ingredientless Drug changed dosage to 1.000000ml.
+Wed Nov 30 23:58:18 PST 2022
+Drug Ingredientless Drug amount set to 50.000000ml.
+Wed Nov 30 23:58:18 PST 2022
+Medication list requested.
+```

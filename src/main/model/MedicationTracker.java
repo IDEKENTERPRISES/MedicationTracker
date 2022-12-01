@@ -16,6 +16,7 @@ public class MedicationTracker implements Writeable {
     // EFFECTS: Initialises a new MedicationTracker object with a new list.
     public MedicationTracker() {
         medicationList = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Started new tracker."));
     }
 
     // EFFECTS: Converts the current tracker into JSON and returns it.
@@ -23,6 +24,7 @@ public class MedicationTracker implements Writeable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("drugs", drugsToJson());
+        EventLog.getInstance().logEvent(new Event("Tracker converted to JSON object."));
         return json;
     }
 
@@ -32,6 +34,7 @@ public class MedicationTracker implements Writeable {
         for (Drug drug : medicationList) {
             jsonArray.put(drug.toJson());
         }
+        EventLog.getInstance().logEvent(new Event("All Drugs converted to JSON object."));
         return jsonArray;
     }
 
@@ -39,13 +42,14 @@ public class MedicationTracker implements Writeable {
     // EFFECTS: Adds a drug to the tracker, returns true if it contains colliding ingredients with another drug.
     public boolean addDrug(Drug drug) {
         for (String ingredient : drug.getIngredients()) {
-            for (Drug existingDrug: medicationList) {
+            for (Drug existingDrug : medicationList) {
                 if (existingDrug.getIngredients().contains(ingredient)) {
                     return true;
                 }
             }
         }
         medicationList.add(drug);
+        EventLog.getInstance().logEvent(new Event(String.format("Drug %s added to tracker.", drug.getName())));
         return false;
     }
 
@@ -54,6 +58,9 @@ public class MedicationTracker implements Writeable {
     // EFFECTS: Removes a drug of given index from the list.
     public boolean removeDrug(int index) {
         if (index >= 0 && index < medicationList.size()) {
+            EventLog.getInstance().logEvent(
+                    new Event(String.format("Drug %s removed from tracker.", medicationList.get(index)))
+            );
             medicationList.remove(index);
             return true;
         }
@@ -64,6 +71,9 @@ public class MedicationTracker implements Writeable {
     // EFFECTS: Removes a given drug from the list.
     public void removeDrug(Drug drug) {
         medicationList.remove(drug);
+        EventLog.getInstance().logEvent(
+                new Event(String.format("Drug %s removed from tracker.", drug.getName()))
+        );
     }
 
     // EFFECTS: Loops through all drugs in the list and returns the next drug based on local time;
@@ -79,11 +89,20 @@ public class MedicationTracker implements Writeable {
                 }
             }
         }
+
+        if (nextDrug != null) {
+            EventLog.getInstance().logEvent(
+                    new Event(String.format("Next drug requested, result was drug %s.", nextDrug.getName()))
+            );
+        }
         return nextDrug;
     }
 
     // EFFECTS: Returns the medication list.
     public ArrayList<Drug> getMedicationList() {
+        EventLog.getInstance().logEvent(
+                new Event("Medication list requested.")
+        );
         return medicationList;
     }
 

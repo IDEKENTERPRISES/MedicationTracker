@@ -2,6 +2,8 @@ package persistence;
 // Code has been restructured from given material in JsonSerializationDemo to work with this project.
 
 import model.Drug;
+import model.Event;
+import model.EventLog;
 import model.MedicationTracker;
 import org.json.JSONArray;
 import org.json.JSONObject;

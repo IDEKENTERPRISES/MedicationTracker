@@ -5,7 +5,6 @@ import model.MedicationTracker;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Scanner;
 
 import static java.lang.Double.parseDouble;
 
-public class MedicApp {
+public class MedicConsole {
 
     private final Scanner scanner;
     private MedicationTracker tracker;
@@ -45,7 +44,7 @@ public class MedicApp {
                     "3 - Cancel")
     );
 
-    public MedicApp() {
+    public MedicConsole() {
         scanner = new Scanner(System.in);
 
         trackingChoice();
